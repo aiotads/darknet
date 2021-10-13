@@ -1,3 +1,5 @@
+wilson_customfile/USB_Dataset/val/*
+wilson_customfile/USB_Dataset/train/*
 *.o
 *.a
 *.dSYM
@@ -64,3 +66,4 @@ uselib
 uselib_track
 darknet
 vcpkg/
+wilson_customfile/yolov4.conv.137

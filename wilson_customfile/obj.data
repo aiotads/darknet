@@ -1,0 +1,5 @@
+classes= 2
+train  = wilson_customfile/USB_Dataset/train.txt
+valid  = wilson_customfile/USB_Dataset/val.txt
+names = wilson_customfile/obj.names
+backup = wilson_customfile/backup/
