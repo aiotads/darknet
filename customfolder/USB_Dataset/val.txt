@@ -1,2 +1,2 @@
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/val/0_1.png
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/val/45_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/val/0_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/val/45_1.png

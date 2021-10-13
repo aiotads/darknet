@@ -1,7 +1,7 @@
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/train/135_1.png
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/train/180_1.png
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/train/225_1.png
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/train/270_1.png
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/train/315_1.png
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/train/360_1.png
-/home/nvidia/wilson/new_darknet/darknet/wilson_customfile/USB_Dataset/train/90_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/train/135_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/train/180_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/train/225_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/train/270_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/train/315_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/train/360_1.png
+/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/train/90_1.png

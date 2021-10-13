@@ -116,6 +116,29 @@ def print_detections(detections, coordinates=False):
             print("{}: {}%".format(label, confidence))
 
 
+def label_draw_boxes(detections, image, colors, image_path, class_name):
+    import cv2
+    #----------------added label data----------------
+    txtname = image_path.split('.')
+    with open(txtname[0]+"."+txtname[1]+'.txt', 'w+') as f:
+        for label, confidence, bbox in detections:
+            left, top, right, bottom = bbox2points(bbox)
+
+            xo = (right+left)/(2*image.shape[1])
+            yo = (bottom+top)/(2*image.shape[0])
+            wo = (right-left)/image.shape[1]
+            ho = (bottom-top)/image.shape[0]   
+                
+            print([str(class_name.index(label))+" ",str(round(xo,6))+" ",str(round(yo,6))+" ",str(round(wo,6))+" ",str(round(ho,6)),'\n'])
+            f.writelines([str(class_name.index(label))+" ",str(round(xo,6))+" ",str(round(yo,6))+" ",str(round(wo,6))+" ",str(round(ho,6)),'\n'])
+
+            cv2.rectangle(image, (left, top), (right, bottom), colors[label], 1)
+            cv2.putText(image, "{} [{:.2f}]".format(label, float(confidence)),
+                        (left, top - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                        colors[label], 2)        
+    return image
+    #----------------added label data----------------
+
 def draw_boxes(detections, image, colors):
     import cv2
     #----------------split video------------------
@@ -132,25 +155,6 @@ def draw_boxes(detections, image, colors):
         #             (left, top - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
         #             colors[label], 2)
     #----------------split video------------------
-    #----------------added label data----------------
-    # txtname = image_path.split('.')
-    # with open(txtname[0]+"."+txtname[1]+'.txt', 'w+') as f:
-    #     for label, confidence, bbox in detections:
-    #         left, top, right, bottom = bbox2points(bbox)
-
-    #         xo = (right+left)/(2*image.shape[1])
-    #         yo = (bottom+top)/(2*image.shape[0])
-    #         wo = (right-left)/image.shape[1]
-    #         ho = (bottom-top)/image.shape[0]   
-                
-    #         print([str(class_name.index(label))+" ",str(round(xo,6))+" ",str(round(yo,6))+" ",str(round(wo,6))+" ",str(round(ho,6)),'\n'])
-    #         f.writelines([str(class_name.index(label))+" ",str(round(xo,6))+" ",str(round(yo,6))+" ",str(round(wo,6))+" ",str(round(ho,6)),'\n'])
-
-    #         cv2.rectangle(image, (left, top), (right, bottom), colors[label], 1)
-    #         cv2.putText(image, "{} [{:.2f}]".format(label, float(confidence)),
-    #                     (left, top - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-    #                     colors[label], 2)        
-    #----------------added label data----------------
     
     for label, confidence, bbox in detections:
         left, top, right, bottom = bbox2points(bbox)
@@ -159,7 +163,6 @@ def draw_boxes(detections, image, colors):
                     (left, top - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     colors[label], 2)
     return image
-
 # draw_boxes.counter_for_picname = 0
 
 def decode_detection(detections):
