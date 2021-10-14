@@ -7,7 +7,7 @@ import darknet
 import argparse
 from threading import Thread, enumerate
 from queue import Queue
-
+from datetime import datetime as dt
 
 def parser():
     parser = argparse.ArgumentParser(description="YOLO Object Detection")
@@ -158,11 +158,31 @@ def drawing(frame_queue, detections_queue, fps_queue):
     cv2.destroyAllWindows()
 
 
+def writeimg(frame_queue, fps_queue):
+    while cap.isOpened():
+        frame = frame_queue.get()
+        fps = fps_queue.get()
+        # print(f'-------------------------------- {fps} ---------------------------------')
+        if cv2.waitKey(fps) & 0xFF == 32:
+            # write_queue.put(image)
+            print('1sddddddddddddddddddddddddddddddddddd')
+            # print(write_queue.queue)
+            file = os.path.join('/home/nvidia/Desktop', f'{dt.now().strftime("%Y-%m-%d_%H-%M-%S")}.png')
+            cv2.imwrite(file, frame)
+                
+    # img = write_queue.get()
+    # if img is not None:
+    #     file = os.path.join('~/Desktop', f'{dt.now().strftime("%Y-%m-%d_%H-%M-%S")}.png')
+    #     cv2.imwrite(file, img)
+
+
 if __name__ == '__main__':
+
     frame_queue = Queue()
     darknet_image_queue = Queue(maxsize=1)
     detections_queue = Queue(maxsize=1)
     fps_queue = Queue(maxsize=1)
+    # write_queue = Queue(maxsize=1)
 
     args = parser()
     check_arguments_errors(args)
@@ -181,3 +201,4 @@ if __name__ == '__main__':
     Thread(target=video_capture, args=(frame_queue, darknet_image_queue)).start()
     Thread(target=inference, args=(darknet_image_queue, detections_queue, fps_queue)).start()
     Thread(target=drawing, args=(frame_queue, detections_queue, fps_queue)).start()
+    Thread(target=writeimg, args=(frame_queue, fps_queue)).start()

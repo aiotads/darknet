@@ -120,7 +120,7 @@ def label_draw_boxes(detections, image, colors, image_path, class_name):
     import cv2
     #----------------added label data----------------
     txtname = image_path.split('.')
-    with open(txtname[0]+"."+txtname[1]+'.txt', 'w+') as f:
+    with open(txtname[0]+'.txt', 'w+') as f:
         for label, confidence, bbox in detections:
             left, top, right, bottom = bbox2points(bbox)
 
