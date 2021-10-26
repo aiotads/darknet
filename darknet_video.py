@@ -148,7 +148,9 @@ def drawing(frame_queue, detections_queue, fps_queue):
                 detections_adjusted.append((str(label), confidence, bbox_adjusted))
             image = darknet.draw_boxes(detections_adjusted, frame, class_colors)
             if not args.dont_show:
-                cv2.imshow('Inference', image)
+                _image = cv2.resize(image, (1080, 720))
+                # cv2.imshow('Inference', image)
+                cv2.imshow('Inference', _image)
             if args.out_filename is not None:
                 video.write(image)
             if cv2.waitKey(fps) == 27:
