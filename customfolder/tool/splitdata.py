@@ -1,6 +1,7 @@
 import os
 
-path = '/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/all_photos/'
+# the last '/' slash don't forget!!! or it will still training but garbage weight
+path = '/workspace/wilson/dataset/singal_usb_blackBG_211102/all_211102/'
 cur_path = os.path.abspath(os.getcwd())
 ptlt = os.listdir(path)
 scale = 0.1

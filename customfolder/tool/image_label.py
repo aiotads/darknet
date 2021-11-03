@@ -106,7 +106,7 @@ if __name__ == '__main__':
     )
 
     # -----------------img to yolo label-----------------
-    path = '/home/nvidia/wilson/new_darknet/darknet/customfolder/USB_Dataset/all_photos/'
+    path = '/workspace/wilson/dataset/singal_black_608_608/black_608_608_1/'
     for filename in os.listdir(path):
         if filename.endswith('.png'):
             print(filename)

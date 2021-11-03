@@ -1,5 +1,5 @@
 classes= 2
-train  = customfolder/USB_Dataset/train.txt
-valid  = customfolder/USB_Dataset/val.txt
+train  = customfolder/train.txt
+valid  = customfolder/val.txt
 names = customfolder/obj.names
 backup = customfolder/backup/
