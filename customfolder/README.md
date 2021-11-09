@@ -69,3 +69,9 @@ change the anchor in .cfg and save.
     ```
     python darknet_images.py --input /workspace/wilson/photo.png --weights customfolder/backup/wilson_yolov4-custom_3000.weights --config_file customfolder/wilson_yolov4-custom.cfg --data_file customfolder/obj.data
     ```
+    Can add threshold parameter to show only confidence over then it 
+    
+    ex.
+    ```
+    python darknet_video.py --input /workspace/wilson/data_defect.mp4 --weights customfolder/backup/wilson_yolov4-custom_3000.weights --config_file customfolder/wilson_yolov4-custom.cfg --data_file customfolder/obj.data --thresh 0.7
+    ```

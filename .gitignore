@@ -7,7 +7,7 @@ customfolder/yolov4.conv.137
 *.dSYM
 *.csv
 *.out
-*.png
+# *.png
 *.so
 *.exe
 *.dll
@@ -68,3 +68,4 @@ uselib
 uselib_track
 darknet
 vcpkg/
+chart.png
