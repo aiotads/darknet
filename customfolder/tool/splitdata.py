@@ -1,7 +1,7 @@
 import os
 
 # the last '/' slash don't forget!!! or it will still training but garbage weight
-path = '/workspace/wilson/dataset/singal_usb_blackBG_211102/all_211102/'
+path = '/workspace/wilson/dataset/singal_usb_blackBG_noglue_211116/mix_all/'
 cur_path = os.path.abspath(os.getcwd())
 ptlt = os.listdir(path)
 scale = 0.1
@@ -10,7 +10,7 @@ print(val)
 
 img_files = []
 for i in range(len(ptlt)):
-    if ptlt[i].split('.')[1] == "png":
+    if ptlt[i].split('.')[-1] == "png":
         img_files.append(ptlt[i])
 with open("train.txt", "w+") as t:
     with open("val.txt", "w+") as v:
