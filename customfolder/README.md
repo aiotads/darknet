@@ -49,16 +49,33 @@ darknet/customfolder
 - wilson_yolov4-custom.cfg : our custom darknet cfg(it can be convert to xmodel)
 - yolov4.conv.137 : the pretrain model by yolo official
 # Training
-## calculate anchor first (cmd for yoloV4)
+## Step.1 calculate anchor first
+yolov4:
 ```
 ./darknet detector calc_anchors customfolder/obj.data -num_of_clusters 9 -width 608 -height 608 -showpause
 ```
+yolov3-tiny:
+```
+./darknet detector calc_anchors customfolder/obj.data -num_of_clusters 6 -width 416 -height 416 -showpause
+```
 It will generate the anchors.txt in darknet/
 
-change the anchor in .cfg and save.
-## start to train
+## Step.2 change the anchor in .cfg and save.
+find the 'anchor' key word and change it then save.
+
+yolov4 will have 3 part of anchor to change.
+
+yolov3-tiny will have 2 part of anchor to change.
+
+## Step.3 start to train
+yolov4:
 ```
 ./darknet detector train customfolder/obj.data customfolder/wilson_yolov4-custom.cfg customfolder/yolov4.conv.137 -dont_show -mjpeg_port 8090 -map -gpus 0
+```
+yolov3-tiny:
+```
+./darknet detector train customfolder/obj.data customfolder/yolov3-tiny.cfg customfolder/yolov3.weights -dont_show
+-mjpeg_port 8090 -map -gpus 0 -clear
 ```
 # Predict
 - Video
@@ -68,4 +85,10 @@ change the anchor in .cfg and save.
 - Image
     ```
     python darknet_images.py --input /workspace/wilson/photo.png --weights customfolder/backup/wilson_yolov4-custom_3000.weights --config_file customfolder/wilson_yolov4-custom.cfg --data_file customfolder/obj.data
+    ```
+    Can add threshold parameter to show only confidence over then it 
+    
+    ex.
+    ```
+    python darknet_video.py --input /workspace/wilson/data_defect.mp4 --weights customfolder/backup/wilson_yolov4-custom_3000.weights --config_file customfolder/wilson_yolov4-custom.cfg --data_file customfolder/obj.data --thresh 0.7
     ```

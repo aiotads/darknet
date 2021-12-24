@@ -2,6 +2,7 @@ customfolder/USB_Dataset/val/*
 customfolder/USB_Dataset/train/*
 customfolder/USB_Dataset/all_photos/*
 customfolder/yolov4.conv.137
+customfolder/backup/*.weights
 *.o
 *.a
 *.dSYM
@@ -32,7 +33,7 @@ ninja.zip
 vcpkg_installed/
 !build/darknet/YoloWrapper.cs
 .fuse*
-*.weights
+# *.weights
 build/*.cmake
 build/*.ninja
 build/*.txt
