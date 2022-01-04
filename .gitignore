@@ -69,3 +69,6 @@ uselib
 uselib_track
 darknet
 vcpkg/
+customfolder/yolov3-tiny.weights
+customfolder/yolov4-tiny.weights
+customfolder/yolov3.weights
