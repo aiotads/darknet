@@ -1,42 +1,23 @@
 import argparse
 import os
-import glob
-from posixpath import join
-import random
-import time
 import cv2
-import numpy as np
 import darknet
 
 def parser():
-    parser = argparse.ArgumentParser(description="YOLO Object Detection")
-    parser.add_argument("--input", type=str, default=0,
-                        help="video source. If empty, uses webcam 0 stream")
-    parser.add_argument("--out_filename", type=str, default="",
-                        help="inference video name. Not saved if empty")
-    parser.add_argument("--weights", default="yolov4.weights",
+    parser = argparse.ArgumentParser(description="Smart labeling")
+    parser.add_argument("-ip", "--image_path", type=str, 
+                        help="the data set directory")
+    parser.add_argument("-df" ,"--data_file", default="./cfg/coco.data",
+                        help="path to data file obj.data")
+    parser.add_argument("-w", "--weights", default="yolov4.weights",
                         help="yolo weights path")
-    parser.add_argument("--dont_show", action='store_true',
-                        help="windown inference display. For headless systems")
-    parser.add_argument("--ext_output", action='store_true',
-                        help="display bbox coordinates of detected objects")
-    parser.add_argument("--config_file", default="./cfg/yolov4.cfg",
+    parser.add_argument("-cfg", "--config_file", default="./cfg/yolov4.cfg",
                         help="path to config file")
-    parser.add_argument("--data_file", default="./cfg/coco.data",
-                        help="path to data file")
-    parser.add_argument("--thresh", type=float, default=.25,
+    parser.add_argument("-t", "--thresh", type=float, default=0.5,
                         help="remove detections with confidence below this value")
+    parser.add_argument("-v", "--verbose", action="store_true",
+                        help="show more info")
     return parser.parse_args()
-
-def str2int(video_path):
-    """
-    argparse returns and string althout webcam uses int (0, 1 ...)
-    Cast to int if needed
-    """
-    try:
-        return int(video_path)
-    except ValueError:
-        return video_path
 
 def check_arguments_errors(args):
     assert 0 < args.thresh < 1, "Threshold should be a float between zero and one (non-inclusive)"
@@ -46,8 +27,8 @@ def check_arguments_errors(args):
         raise(ValueError("Invalid weight path {}".format(os.path.abspath(args.weights))))
     if not os.path.exists(args.data_file):
         raise(ValueError("Invalid data file path {}".format(os.path.abspath(args.data_file))))
-    if str2int(args.input) == str and not os.path.exists(args.input):
-        raise(ValueError("Invalid video path {}".format(os.path.abspath(args.input))))
+    if args.image_path and not os.path.exists(args.image_path):
+        raise(ValueError("Invalid image data path {}".format(os.path.abspath(args.image_path))))
 
 def image_detection(image_path, network, class_names, class_colors, thresh):
     # Darknet doesn't accept numpy images.
@@ -66,36 +47,12 @@ def image_detection(image_path, network, class_names, class_colors, thresh):
     darknet.copy_image_from_bytes(darknet_image, image_resized.tobytes())
     detections = darknet.detect_image(network, class_names, darknet_image, thresh=thresh)
     darknet.free_image(darknet_image)
-    image = darknet.label_draw_boxes(detections, image_resized, class_colors,image_path,class_names)
+    image = darknet.label_draw_boxes(detections, image_resized, class_colors, image_path, class_names)
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB), detections
-    
-# -----------------Video bbox to img-----------------
-# path = "/workspace/wilson/"
-# input_video = os.path.join(path, 'data_perfect.mp4')
-# cap = cv2.VideoCapture(input_video)
-# pic_name_count = 0
-# while True:
-#     ret,frame = cap.read()
-#     image, detections = image_detection(
-#         frame, network, class_names, class_colors, thresh=0.5      
-#     )   
-#     darknet.print_detections(detections)
-#     pic_name_count = pic_name_count + 1
-#     cv2.imshow('Inference-'+str(pic_name_count), image)
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         break
-
-# cap.release()
-# cap.destroyAllWindows()
-# -----------------Video bbox to img-----------------
-
-
 
 if __name__ == '__main__':
     args = parser()
     check_arguments_errors(args)
-    print(type(args))
-    print(args)
 
     # random.seed(3)  # deterministic bbox colors
     network, class_names, class_colors = darknet.load_network(
@@ -105,19 +62,18 @@ if __name__ == '__main__':
         batch_size=1
     )
 
-    # -----------------img to yolo label-----------------
-    path = '/workspace/wilson/dataset/singal_black_608_608/black_608_608_1/'
-    for filename in os.listdir(path):
+    with open(os.path.join(args.image_path, 'classes.txt'), 'w+') as f:
+        for class_name in class_names:
+            f.writelines(class_name + '\n')
+
+    for filename in os.listdir(args.image_path):
         if filename.endswith('.png'):
-            print(filename)
-            images = path+filename
+            images = os.path.join(args.image_path, filename)
             image, detections = image_detection(
-                images, network, class_names, class_colors, thresh=0.5      
+                images, network, class_names, class_colors, thresh=args.thresh      
             )
+            if args.verbose:
+                print(images)
+                darknet.print_detections(detections)
 
-            darknet.print_detections(detections)
-
-        cv2.imshow('Inference-'+str(filename), image)
-        # cv2.waitKey() # STOP per image until press 'ENTER' key
-        cv2.destroyAllWindows()
-    # -----------------img to yolo label-----------------
+    print('Smart labeling done!')
