@@ -14,13 +14,21 @@ def main():
         for class_name in class_names:
             f.writelines(class_name + '\n')
 
-    for filename in os.listdir(args.image_path):
-        if filename.endswith('.png'):
-            images_path = os.path.join(args.image_path, filename)
-            detections, preprocess_image = image_detection(images_path, network, class_names, class_colors, thresh=args.thresh)
-            gen_file_train_val(detections , preprocess_image, class_colors, images_path, class_name)
-            vprint(images_path)
-            vprint_detections(detections)
+    for dirPath, _, fileName in os.walk(args.image_path):
+        for f in fileName:
+            if f.endswith('.png'):
+                images_path = os.path.join(dirPath, fileName)
+                detections, preprocess_image = image_detection(images_path, network, class_names, class_colors, thresh=args.thresh)
+                gen_file_train_val(detections , preprocess_image, class_colors, images_path, class_name)
+                vprint(images_path)
+                vprint_detections(detections)
+    # for filename in os.listdir(args.image_path):
+    #     if filename.endswith('.png'):
+    #         images_path = os.path.join(args.image_path, filename)
+    #         detections, preprocess_image = image_detection(images_path, network, class_names, class_colors, thresh=args.thresh)
+    #         gen_file_train_val(detections , preprocess_image, class_colors, images_path, class_name)
+    #         vprint(images_path)
+    #         vprint_detections(detections)
     print('Smart labeling done!')
 
 if __name__ == '__main__':
